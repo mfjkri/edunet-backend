@@ -22,7 +22,7 @@ export async function connectDB(dbName?: string) {
     await db.authenticate();
     connectedDBs.set(name, db);
     console.log(`Connection to ${name} DB has been established successfully.`);
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Unable to connect to ${name} DB:`, error);
   }
 

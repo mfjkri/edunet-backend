@@ -29,7 +29,7 @@ export default async function handleRefreshToken(
 
     const tokens = getTokens(user);
     res.json({ tokens });
-  } catch (error) {
+  } catch (error: any) {
     res.status(401).json({ message: ERROR_INVALID_REFRESH_TOKEN });
   }
 }

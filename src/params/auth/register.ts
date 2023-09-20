@@ -1,7 +1,7 @@
 import { castParams } from "../params";
 
 export interface RegisterParams {
-  fullname: string;
+  fullName: string;
   email: string;
   password: string;
   type: string;
@@ -13,7 +13,7 @@ export function parseParams(json: any): RegisterParams | undefined {
 
 const typeMap: any = {
   props: [
-    { json: "fullname", js: "fullname", typ: "" },
+    { json: "fullName", js: "fullName", typ: "" },
     { json: "email", js: "email", typ: "" },
     { json: "password", js: "password", typ: "" },
     { json: "type", js: "type", typ: "" },

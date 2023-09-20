@@ -46,7 +46,9 @@ export default async function handleResetPassword(
     await resetPasswordToken.destroy();
 
     res.status(201).json({ message: SUCCESS_RESET_PASSWORD });
-  } catch (error) {
-    res.status(500).json({ message: ERROR_FAILED_TO_RESET_PASSWORD, error });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: ERROR_FAILED_TO_RESET_PASSWORD, error: error.message });
   }
 }

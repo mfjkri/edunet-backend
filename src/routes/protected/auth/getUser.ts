@@ -10,7 +10,6 @@ router.get("/?:id", async (req: Request, res: Response) => {
   if (!params) {
     return res.status(400).json({ message: "Invalid params" });
   }
-
   await handleGetUser(req, res, params);
 });
 

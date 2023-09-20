@@ -17,7 +17,7 @@ export default async function handleRegister(
 ) {
   try {
     if (
-      (await User.findOne({ where: { fullname: params.fullname } })) ||
+      (await User.findOne({ where: { fullName: params.fullName } })) ||
       (await User.findOne({ where: { email: params.email.toLowerCase() } }))
     ) {
       return res.status(400).json({ message: ERROR_USER_ALREADY_EXIST });
@@ -29,7 +29,7 @@ export default async function handleRegister(
     }
 
     const user = await User.create({
-      fullname: params.fullname,
+      fullName: params.fullName,
       email: params.email.toLowerCase(),
       password: params.password,
       type: params.type,
@@ -41,7 +41,9 @@ export default async function handleRegister(
       tokens,
       user,
     });
-  } catch (error) {
-    res.status(500).json({ message: ERROR_FAILED_TO_REGISTER_USER, error });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: ERROR_FAILED_TO_REGISTER_USER, error: error.message });
   }
 }

@@ -1,7 +1,7 @@
 export function castParams<T>(req: any, typeMap: any): T | undefined {
   try {
     return cast(req, typeMap);
-  } catch (error) {
+  } catch (error: any) {
     console.log("Invalid param:", error);
     return undefined;
   }

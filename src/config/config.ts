@@ -14,6 +14,7 @@ type Config = DBConfig & {
 
   UseLocalDB: boolean;
 
+  EmailActive: string;
   EmailUsername: string;
   EmailPassword: string;
 };
@@ -41,6 +42,7 @@ export function getConfig(): Config {
     LOCAL_DB_USERNAME,
     LOCAL_DB_PASSWORD,
 
+    EMAIL_ACTIVE,
     EMAIL_USERNAME,
     EMAIL_PASSWORD,
   } = process.env;
@@ -69,6 +71,7 @@ export function getConfig(): Config {
     UseLocalDB: USE_LOCAL_DB === "true",
     ...dbConfig,
 
+    EmailActive: EMAIL_ACTIVE || "false",
     EmailUsername: EMAIL_USERNAME || "",
     EmailPassword: EMAIL_PASSWORD || "",
   };

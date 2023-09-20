@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import Avatar from "../../models/avatar";
-import User from "../../models/user";
 import { GetUserParams } from "../../params/auth/getUser";
+import { getUserWithRelationAndCentre } from "../../dataaccess/user";
+import User from "../../models/user";
 
 const SUCCESS_FETCHED_USER = "Fetched user successfully";
 
@@ -15,31 +15,17 @@ export default async function handleGetUser(
   params: GetUserParams
 ) {
   try {
-    let user: User | null;
-    if (!req.params.id || req.params.id === "0") {
-      user = req.body.user;
-    } else {
-      user = await User.findOne({
-        where: { id: req.params.id },
-        include: { model: Avatar, as: "avatar" },
-      });
-    }
-
-    if (!user) {
-      return res.status(404).json({ message: ERROR_USER_DOES_NOT_EXIST });
-    }
+    const user: User = req.body.user;
+    const userId = req.params.id || req.body.user.id;
+    const getUser = await getUserWithRelationAndCentre(user.centreId, userId);
 
     return res.status(201).json({
       message: SUCCESS_FETCHED_USER,
-      user: {
-        fullname: user.fullname,
-        email: user.email,
-        type: user.type,
-        avatar: user.avatar,
-        joinedAt: user.createdAt,
-      },
+      user: getUser,
     });
-  } catch (error) {
-    res.status(500).json({ message: ERROR_FAILED_TO_GET_USER, error });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: ERROR_FAILED_TO_GET_USER, error: error.message });
   }
 }

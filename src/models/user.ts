@@ -1,7 +1,5 @@
 import {
   Association,
-  BelongsToGetAssociationMixin,
-  BelongsToSetAssociationMixin,
   CreationOptional,
   DataTypes,
   InferAttributes,
@@ -14,29 +12,30 @@ import {
 import getDB from "../database/database";
 import { hashPassword } from "../utilities/auth";
 import Avatar from "./avatar";
+import Centre from "./centre";
 
 export default class User extends Model<
   InferAttributes<User>,
   InferCreationAttributes<User>
 > {
   declare id: CreationOptional<number>;
-  declare fullname: string;
+  declare fullName: string;
   declare email: string;
   declare password: string;
   declare type: string;
 
   declare avatarId: CreationOptional<number>;
+  declare centreId: CreationOptional<number>;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  declare getAvatar: BelongsToGetAssociationMixin<Avatar>;
-  declare setAvatar: BelongsToSetAssociationMixin<Avatar, number>;
-
   declare readonly avatar?: NonAttribute<Avatar>;
+  declare readonly centre?: NonAttribute<Centre>;
 
   declare static associations: {
     avatar: Association<User, Avatar>;
+    centre: Association<User, Centre>;
   };
 }
 
@@ -49,10 +48,9 @@ export function init(db?: Sequelize) {
         autoIncrement: true,
       },
 
-      fullname: {
+      fullName: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: false,
       },
       email: {
         type: DataTypes.STRING,
@@ -74,6 +72,14 @@ export function init(db?: Sequelize) {
         allowNull: true,
         references: {
           model: Avatar,
+          key: "id",
+        },
+      },
+      centreId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: Centre,
           key: "id",
         },
       },
@@ -116,6 +122,12 @@ export function init(db?: Sequelize) {
   User.belongsTo(Avatar, {
     as: "avatar",
     foreignKey: "avatarId",
+    onDelete: "CASCADE",
+  });
+
+  User.belongsTo(Centre, {
+    as: "centre",
+    foreignKey: "centreId",
     onDelete: "CASCADE",
   });
 }

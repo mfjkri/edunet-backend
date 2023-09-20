@@ -16,7 +16,6 @@ export default async function handleLogin(
   res: Response,
   params: LoginParams
 ) {
-  console.log("handleLogin");
   try {
     const password = req.body.password as string;
     const email = req.body.email as string;
@@ -37,7 +36,9 @@ export default async function handleLogin(
       tokens,
       user,
     });
-  } catch (error) {
-    res.status(500).json({ message: ERROR_FAILED_TO_LOGIN, error });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: ERROR_FAILED_TO_LOGIN, error: error.message });
   }
 }

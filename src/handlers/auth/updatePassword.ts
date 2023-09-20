@@ -32,7 +32,9 @@ export default async function handleUpdatePassword(
     await user.update({ password: params.newPassword });
 
     res.status(201).json({ message: SUCCESS_UPDATED_PASSWORD, user });
-  } catch (error) {
-    res.status(500).json({ message: ERROR_FAILED_TO_UPDATE_PASSWORD, error });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: ERROR_FAILED_TO_UPDATE_PASSWORD, error: error.message });
   }
 }

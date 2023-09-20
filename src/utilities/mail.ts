@@ -16,14 +16,19 @@ export function initMailer() {
   });
 }
 
-export async function sendEmailWithOTP(userEmail: string, otp: string) {
+async function sendEmail(toEmail: string, subject: string, text: string) {
   const config = getConfig();
+  if (config.EmailActive !== "true") {
+    console.log("Email not active, not sending email");
+    return;
+  }
+
   transporter
     .sendMail({
       from: config.EmailUsername,
-      to: userEmail,
-      subject: "Password Reset OTP",
-      text: `Your OTP for resetting the password is: ${otp}`,
+      to: toEmail,
+      subject: subject,
+      text: text,
     })
     .then((info) => {
       console.log("Email sent:", info.response);
@@ -31,4 +36,26 @@ export async function sendEmailWithOTP(userEmail: string, otp: string) {
     .catch((error) => {
       console.error("Error sending email:", error);
     });
+}
+
+export async function sendEmailWithOTP(userEmail: string, otp: string) {
+  await sendEmail(
+    userEmail,
+    "Password Reset OTP",
+    `Your OTP for resetting the password is: ${otp}`
+  );
+}
+
+export async function sendEmailWithPassword(
+  userEmail: string,
+  password: string
+) {
+  await sendEmail(
+    userEmail,
+    "Account Created",
+    `Your login details are:
+    \n    Email: ${userEmail}
+    \n    Password: ${password}
+    \n\nPlease reset your password as soon as possible.`
+  );
 }

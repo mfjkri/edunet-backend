@@ -43,7 +43,9 @@ export default async function handleGenerateOTP(
 
     await sendEmailWithOTP(user.email, otp);
     res.status(201).json({ message: SUCCESS_OTP_GENERATED });
-  } catch (error) {
-    res.status(500).json({ message: ERROR_FAILED_TO_GENERATE_OTP, error });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: ERROR_FAILED_TO_GENERATE_OTP, error: error.message });
   }
 }
