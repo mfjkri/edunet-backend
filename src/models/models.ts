@@ -1,6 +1,18 @@
 import { Sequelize } from "sequelize";
 
-const models = ["avatar", "user", "resetPasswordToken"];
+const models = [
+  "avatar",
+  "centre",
+  "user",
+  "resetPasswordToken",
+  "admin",
+  "tutor",
+  "parent",
+  "student",
+  "class",
+  "studentClass",
+  "tutorClass",
+];
 
 export default async function migrateModels(db?: Sequelize) {
   for (const model of models) {
