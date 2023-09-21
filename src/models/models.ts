@@ -12,6 +12,7 @@ const models = [
   "class",
   "studentClass",
   "tutorClass",
+  "assessment",
   "note",
 ];
 
