@@ -8,6 +8,7 @@ import User from "../models/user";
 import Avatar from "../models/avatar";
 import Parent from "../models/parent";
 import Note from "../models/note";
+import Assessment from "../models/assessment";
 
 async function createClass(
   centreId: number,
@@ -156,6 +157,10 @@ async function getClassViewById(
                   attributes: { exclude: ["password"] },
                 },
               ],
+            },
+            {
+              model: Assessment,
+              as: "assessments",
             },
           ],
         },

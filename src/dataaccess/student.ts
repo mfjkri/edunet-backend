@@ -1,3 +1,4 @@
+import Assessment from "../models/assessment";
 import Avatar from "../models/avatar";
 import Centre from "../models/centre";
 import Class from "../models/class";
@@ -165,6 +166,10 @@ async function getStudentViewById(
           ],
         },
         { model: Class, as: "classes" },
+        {
+          model: Assessment,
+          as: "assessments",
+        },
       ],
     });
 
