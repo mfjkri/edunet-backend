@@ -26,7 +26,7 @@ export default class User extends Model<
   declare type: string;
 
   declare avatarId: CreationOptional<number>;
-  declare centreId: CreationOptional<number>;
+  declare centreId: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

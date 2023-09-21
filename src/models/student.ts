@@ -22,9 +22,9 @@ export default class Student extends Model<
   declare id: CreationOptional<number>;
   declare contact: string;
 
-  declare userId: CreationOptional<number>;
-  declare centreId: CreationOptional<number>;
-  declare parentId: CreationOptional<number>;
+  declare userId: number;
+  declare centreId: number;
+  declare parentId: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

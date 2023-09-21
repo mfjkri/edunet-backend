@@ -20,8 +20,8 @@ export default class Parent extends Model<
   declare id: CreationOptional<number>;
   declare contact: string;
 
-  declare userId: CreationOptional<number>;
-  declare centreId: CreationOptional<number>;
+  declare userId: number;
+  declare centreId: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

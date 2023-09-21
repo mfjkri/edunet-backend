@@ -23,7 +23,7 @@ export default class Class extends Model<
   declare time: string;
   declare venue: string;
 
-  declare centreId: CreationOptional<number>;
+  declare centreId: number;
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
