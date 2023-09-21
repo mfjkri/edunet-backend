@@ -13,6 +13,7 @@ import getDB from "../database/database";
 import { hashPassword } from "../utilities/auth";
 import Avatar from "./avatar";
 import Centre from "./centre";
+import Note from "./note";
 
 export default class User extends Model<
   InferAttributes<User>,
@@ -36,6 +37,7 @@ export default class User extends Model<
   declare static associations: {
     avatar: Association<User, Avatar>;
     centre: Association<User, Centre>;
+    notes: Association<User, Note>;
   };
 }
 

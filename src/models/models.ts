@@ -12,6 +12,7 @@ const models = [
   "class",
   "studentClass",
   "tutorClass",
+  "note",
 ];
 
 export default async function migrateModels(db?: Sequelize) {

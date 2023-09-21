@@ -3,6 +3,7 @@ import { Router } from "express";
 import authenticateToken from "../../middleware/auth";
 import AuthRouter from "./auth/auth";
 import ClassRouter from "./class/class";
+import NoteRouter from "./note/note";
 import StudentRouter from "./student/student";
 import TutorRouter from "./tutor/tutor";
 
@@ -13,6 +14,7 @@ router.use(
   authenticateToken,
   AuthRouter,
   ClassRouter,
+  NoteRouter,
   StudentRouter,
   TutorRouter
 );
