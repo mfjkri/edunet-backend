@@ -3,6 +3,7 @@ import {
   createClass,
   enrollStudentInClass,
 } from "../../src/dataaccess/class";
+import { createNote } from "../../src/dataaccess/note";
 import {
   createStudentUser,
   createTutorUser,
@@ -14,7 +15,7 @@ const admins = [
     centreName: "testCentre",
     fullName: "admin",
     password: "123",
-    email: "2@2.com",
+    email: "admin@gmail.com",
     contact: "12345678",
   },
   {
@@ -30,9 +31,10 @@ const tutors = [
   {
     fullName: "john",
     contact: "23456789",
-    email: "5ee38e01-ca63-4601-93a5-07a09a0633d7@mailslurp.com",
+    email: "tutor@gmail.com",
     centre: "testCentre",
     classes: ["Class 1", "Class 2", "Class 3"],
+    notes: ["No notes from me"],
   },
   {
     fullName: "bob",
@@ -40,19 +42,21 @@ const tutors = [
     email: "ff65a0e1-55d6-4bf0-9430-bb90aae6048a@mailslurp.com",
     centre: "testCentre",
     classes: ["Class 4"],
+    notes: ["This is a note", "This is another note", "This is a third note"],
   },
 ];
 
 const students = [
   {
     studentFullName: "Booboo",
-    studentEmail: "d446ba15-72b0-4a6f-bdec-4798f7cdea8c@mailslurp.com",
+    studentEmail: "student@gmail.com",
     studentContact: "24680248",
     parentFullName: "Muhammad Fikri",
     parentEmail: "084acf1c-c2df-4c2e-88d1-a23955e0d356@mailslurp.com",
     parentContact: "13579135",
     centre: "testCentre",
     classes: ["Class 1", "Class 2", "Class 3"],
+    notes: ["This is a note", "This is another note", "This is a third note"],
   },
   {
     studentFullName: "Nini",
@@ -63,6 +67,7 @@ const students = [
     parentContact: "48024680",
     centre: "testCentre",
     classes: ["Class 3", "Class 4"],
+    notes: ["This is a single note"],
   },
   {
     studentFullName: "Flory",
@@ -73,6 +78,7 @@ const students = [
     parentContact: "48024680",
     centre: "testCentre",
     classes: ["Class 5"],
+    notes: [],
   },
 ];
 
@@ -157,6 +163,10 @@ export default async function seed() {
       tutor.contact
     );
 
+    for (const note of tutor.notes) {
+      await createNote(centre.id, response.tutor.userId, note);
+    }
+
     for (const className of tutor.classes) {
       const singleClass = centre.classes[className];
       await assignTutorToClass(centre.id, singleClass.id, response.tutor.id);
@@ -175,6 +185,10 @@ export default async function seed() {
       student.parentEmail,
       student.parentContact
     );
+
+    for (const note of student.notes) {
+      await createNote(centre.id, response.student.userId, note);
+    }
 
     for (const className of student.classes) {
       const singleClass = centre.classes[className];
