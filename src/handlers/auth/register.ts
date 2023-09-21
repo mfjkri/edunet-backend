@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import User from "../../models/user";
 import getTokens from "./jwt";
 import { RegisterParams } from "../../params/auth/register";
+import { createUserWithCentreAndAdmin } from "../../dataaccess/user";
 
 const SUCCESS_USER_REGISTERED = "User registered successfully";
 
@@ -28,18 +29,22 @@ export default async function handleRegister(
       return res.status(400).json({ message: ERROR_INVALID_EMAIL_FORMAT });
     }
 
-    const user = await User.create({
-      fullName: params.fullName,
-      email: params.email.toLowerCase(),
-      password: params.password,
-      type: params.type,
-    });
+    if (params.type !== "admin") {
+    }
 
-    const tokens = getTokens(user);
+    const response = await createUserWithCentreAndAdmin(
+      params.centreName,
+      params.fullName,
+      params.email.toLowerCase(),
+      params.password,
+      params.contact
+    );
+
+    const tokens = getTokens(response.adminUser);
     res.status(201).json({
       message: SUCCESS_USER_REGISTERED,
       tokens,
-      user,
+      user: response.adminUser,
     });
   } catch (error: any) {
     res
