@@ -3,6 +3,7 @@ import User from "../models/user";
 import Centre from "../models/centre";
 import Class from "../models/class";
 import Avatar from "../models/avatar";
+import Note from "../models/note";
 
 async function createTutor(
   contact: string,
@@ -128,6 +129,10 @@ async function getTutorViewById(
             {
               model: Avatar,
               as: "avatar",
+            },
+            {
+              model: Note,
+              as: "notes",
             },
           ],
           attributes: { exclude: ["password"] },

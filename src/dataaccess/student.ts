@@ -1,6 +1,7 @@
 import Avatar from "../models/avatar";
 import Centre from "../models/centre";
 import Class from "../models/class";
+import Note from "../models/note";
 import Parent from "../models/parent";
 import Student from "../models/student";
 import User from "../models/user";
@@ -134,6 +135,10 @@ async function getStudentViewById(
             {
               model: Avatar,
               as: "avatar",
+            },
+            {
+              model: Note,
+              as: "notes",
             },
           ],
           attributes: { exclude: ["password"] },
