@@ -16,11 +16,8 @@ export default async function handleViewAssessments(
   try {
     const user: User = req.body.user;
     const id = req.params.id;
-    const classId = req.params.classId;
     const response = await getAssessmentsByStudentId(
       user.centreId,
-      user.id,
-      parseInt(classId),
       parseInt(id)
     );
 

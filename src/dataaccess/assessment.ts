@@ -115,15 +115,11 @@ async function editAssessment(
 
 async function getAssessmentsByStudentId(
   centreId: number,
-  requesterId: number,
-  classId: number,
   studentId: number
 ): Promise<Assessment[]> {
-  validateAccessPermission(requesterId, classId);
-
   try {
     return await Assessment.findAll({
-      where: { centreId: centreId, classId: classId, studentId: studentId },
+      where: { centreId: centreId, studentId: studentId },
       order: [["createdAt", "DESC"]],
     });
   } catch (error: any) {
