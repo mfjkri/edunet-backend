@@ -121,12 +121,11 @@ async function createStudentUser(
       );
     }
 
-    let isEnrolled = false;
-    for (const classId of classIds) {
-      isEnrolled =
-        (await enrollStudentInClass(centreId, classId, student.id)) ||
-        isEnrolled;
-    }
+    const isEnrolled = await enrollStudentInClass(
+      centreId,
+      classIds,
+      student.id
+    );
 
     return { studentUser, student, parentUser, parent, isEnrolled };
   } catch (error: any) {

@@ -180,17 +180,18 @@ export default async function seed() {
       );
     }
 
-    for (const className of tutor.classes) {
-      const singleClass = centre.classes[className];
-      await assignTutorToClass(centre.id, singleClass.id, response.tutor.id);
-    }
+    await assignTutorToClass(
+      centre.id,
+      tutor.classes.map((className) => centre.classes[className].id),
+      response.tutor.id
+    );
   }
 
   for (const student of students) {
     const centre = centres[student.centre];
     const response = await createStudentUser(
       centre.id,
-      centre.classes[student.classes[0]].id,
+      student.classes.map((className) => centre.classes[className].id),
       student.studentFullName,
       student.studentEmail,
       student.studentContact,
@@ -205,15 +206,6 @@ export default async function seed() {
         response.student.userId,
         note.title,
         note.content
-      );
-    }
-
-    for (const className of student.classes) {
-      const singleClass = centre.classes[className];
-      await enrollStudentInClass(
-        centre.id,
-        singleClass.id,
-        response.student.id
       );
     }
   }
