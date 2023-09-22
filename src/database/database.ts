@@ -53,6 +53,12 @@ function connect(config: Config) {
     host: Hostname,
     port: Port,
     dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   });
 }
 export async function createBackupDB() {
