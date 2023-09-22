@@ -5,14 +5,54 @@ import Tutor from "../models/tutor";
 async function createNote(
   centreId: number,
   userId: number,
+  title: string,
   content: string
 ): Promise<Note> {
   try {
     return await Note.create({
       centreId: centreId,
       userId: userId,
+      title: title,
       content: content,
     });
+  } catch (error: any) {
+    throw new Error(`Failed to create note: ${error.message}`);
+  }
+}
+
+async function createNoteByStudentId(
+  centreId: number,
+  studentId: number,
+  title: string,
+  content: string
+): Promise<Note> {
+  try {
+    const student = await Student.findOne({
+      where: { centreId: centreId, id: studentId },
+    });
+    if (!student) {
+      throw new Error(`Student with ID ${studentId} not found`);
+    }
+    return await createNote(centreId, student.userId, title, content);
+  } catch (error: any) {
+    throw new Error(`Failed to create note: ${error.message}`);
+  }
+}
+
+async function createNoteByTutorId(
+  centreId: number,
+  tutorId: number,
+  title: string,
+  content: string
+): Promise<Note> {
+  try {
+    const tutor = await Tutor.findOne({
+      where: { centreId: centreId, id: tutorId },
+    });
+    if (!tutor) {
+      throw new Error(`Tutor with ID ${tutorId} not found`);
+    }
+    return await createNote(centreId, tutor.userId, title, content);
   } catch (error: any) {
     throw new Error(`Failed to create note: ${error.message}`);
   }
@@ -32,6 +72,7 @@ async function deleteNote(centreId: number, noteId: number): Promise<boolean> {
 async function editNote(
   centreId: number,
   noteId: number,
+  title: string,
   content: string
 ): Promise<Note> {
   try {
@@ -42,7 +83,14 @@ async function editNote(
       throw new Error(`Note with ID ${noteId} not found`);
     }
 
-    note.content = content;
+    if (note.content) {
+      note.content = content;
+    }
+
+    if (note.title) {
+      note.title = title;
+    }
+
     await note.save();
     await note.reload();
 
@@ -120,6 +168,8 @@ async function getNotesByTutorId(
 
 export {
   createNote,
+  createNoteByStudentId,
+  createNoteByTutorId,
   deleteNote,
   editNote,
   getNoteById,

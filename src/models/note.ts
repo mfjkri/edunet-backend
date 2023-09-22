@@ -21,6 +21,7 @@ export default class Note extends Model<
   declare centreId: number;
   declare userId: number;
 
+  declare title: string;
   declare content: string;
 
   declare createdAt: CreationOptional<Date>;
@@ -53,6 +54,10 @@ export function init(db?: Sequelize) {
         allowNull: false,
       },
 
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       content: {
         type: DataTypes.STRING,
         allowNull: false,

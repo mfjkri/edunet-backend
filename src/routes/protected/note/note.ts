@@ -1,6 +1,8 @@
 import { Router } from "express";
 
 import AddNoteRouter from "./addNote";
+import AddNoteByStudentIdRouter from "./addNoteByStudentId";
+import AddNoteByTutorIdRouter from "./addNoteByTutorId";
 import DeleteNoteRouter from "./deleteNote";
 import EditNoteRouter from "./editClass";
 import ViewNoteRouter from "./viewNote";
@@ -16,6 +18,8 @@ router.use(
   checkTutor,
   ViewNoteRouter,
   AddNoteRouter,
+  AddNoteByStudentIdRouter,
+  AddNoteByTutorIdRouter,
   EditNoteRouter,
   DeleteNoteRouter,
   ViewNotesRouter,

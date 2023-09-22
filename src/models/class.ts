@@ -48,6 +48,7 @@ export function init(db?: Sequelize) {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       day: {
         type: DataTypes.STRING,

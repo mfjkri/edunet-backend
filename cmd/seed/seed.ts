@@ -34,7 +34,7 @@ const tutors = [
     email: "tutor@gmail.com",
     centre: "testCentre",
     classes: ["Class 1", "Class 2", "Class 3"],
-    notes: ["No notes from me"],
+    notes: [{ title: "Only Note", content: "No notes from me" }],
   },
   {
     fullName: "bob",
@@ -42,7 +42,11 @@ const tutors = [
     email: "ff65a0e1-55d6-4bf0-9430-bb90aae6048a@mailslurp.com",
     centre: "testCentre",
     classes: ["Class 4"],
-    notes: ["This is a note", "This is another note", "This is a third note"],
+    notes: [
+      { title: "I Note", content: "This is a note" },
+      { title: "II note", content: "This is another note" },
+      { title: "III note", content: "This is a third note" },
+    ],
   },
 ];
 
@@ -56,7 +60,11 @@ const students = [
     parentContact: "13579135",
     centre: "testCentre",
     classes: ["Class 1", "Class 2", "Class 3"],
-    notes: ["This is a note", "This is another note", "This is a third note"],
+    notes: [
+      { title: "I Note", content: "This is a note" },
+      { title: "II note", content: "This is another note" },
+      { title: "III note", content: "This is a third note" },
+    ],
   },
   {
     studentFullName: "Nini",
@@ -67,7 +75,7 @@ const students = [
     parentContact: "48024680",
     centre: "testCentre",
     classes: ["Class 3", "Class 4"],
-    notes: ["This is a single note"],
+    notes: [{ title: "YesNote", content: "This is a single note" }],
   },
   {
     studentFullName: "Flory",
@@ -164,7 +172,12 @@ export default async function seed() {
     );
 
     for (const note of tutor.notes) {
-      await createNote(centre.id, response.tutor.userId, note);
+      await createNote(
+        centre.id,
+        response.tutor.userId,
+        note.title,
+        note.content
+      );
     }
 
     for (const className of tutor.classes) {
@@ -187,7 +200,12 @@ export default async function seed() {
     );
 
     for (const note of student.notes) {
-      await createNote(centre.id, response.student.userId, note);
+      await createNote(
+        centre.id,
+        response.student.userId,
+        note.title,
+        note.content
+      );
     }
 
     for (const className of student.classes) {

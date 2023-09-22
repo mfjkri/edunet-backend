@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
 
-import { AddNoteParams } from "../../params/note/addNote";
-import { createNote } from "../../dataaccess/note";
+import { AddNoteByTutorIdParams } from "../../params/note/addNoteByTutorId";
+import { createNoteByTutorId } from "../../dataaccess/note";
 import User from "../../models/user";
 
 const SUCCESS_CREATED_NOTE = "Note created successfully";
 
 const ERROR_FAILED_TO_CREATE_NOTE = "Failed to create note";
 
-export default async function handleAddNote(
+export default async function handleAddNoteByTutorId(
   req: Request,
   res: Response,
-  params: AddNoteParams
+  params: AddNoteByTutorIdParams
 ) {
   try {
     const user = req.body.user as User;
 
-    const response = await createNote(
+    const response = await createNoteByTutorId(
       user.centreId,
-      params.userId,
+      params.tutorId,
       params.title,
       params.content
     );

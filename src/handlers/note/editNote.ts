@@ -18,6 +18,7 @@ export default async function handleEditNote(
     const response = await editNote(
       user.centreId,
       params.noteId,
+      params.title,
       params.content
     );
 
