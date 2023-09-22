@@ -270,7 +270,7 @@ async function getUserWithRelationAndCentre(centreId: number, userId: number) {
     }
 
     return {
-      ...user,
+      ...user.toJSON(),
       fullName: user.fullName,
       email: user.email,
       contact: view.contact,
