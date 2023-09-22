@@ -18,7 +18,7 @@ export default async function handleAddStudent(
 
     const response = await createStudentUser(
       user.centreId,
-      params.classId,
+      params.classIds,
       params.studentFullName,
       params.studentEmail,
       params.studentContact,

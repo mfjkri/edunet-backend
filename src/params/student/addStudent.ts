@@ -1,7 +1,7 @@
 import { castParams } from "../params";
 
 export interface AddStudentParams {
-  classId: number;
+  classIds: number[];
 
   studentFullName: string;
   studentEmail: string;
@@ -18,7 +18,7 @@ export function parseParams(json: any): AddStudentParams | undefined {
 
 const typeMap: any = {
   props: [
-    { json: "classId", js: "classId", typ: 0 },
+    { json: "classIds", js: "classIds", typ: { arrayItems: 0 } },
 
     { json: "studentFullName", js: "studentFullName", typ: "" },
     { json: "studentEmail", js: "studentEmail", typ: "" },

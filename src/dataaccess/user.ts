@@ -43,7 +43,7 @@ async function createUserWithCentreAndAdmin(
 
 async function createStudentUser(
   centreId: number,
-  classId: number,
+  classIds: number[],
   studentFullName: string,
   studentEmail: string,
   studentContact: string,
@@ -121,12 +121,12 @@ async function createStudentUser(
       );
     }
 
-    console.log("enrolling student in class");
-    const isEnrolled = await enrollStudentInClass(
-      centreId,
-      classId,
-      student.id
-    );
+    let isEnrolled = false;
+    for (const classId of classIds) {
+      isEnrolled =
+        (await enrollStudentInClass(centreId, classId, student.id)) ||
+        isEnrolled;
+    }
 
     return { studentUser, student, parentUser, parent, isEnrolled };
   } catch (error: any) {
