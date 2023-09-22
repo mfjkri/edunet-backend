@@ -34,7 +34,12 @@ export default async function handleLogin(
     res.json({
       message: SUCCESS_USER_LOGGED_IN,
       tokens,
-      user,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        type: user.type,
+      },
     });
   } catch (error: any) {
     res
