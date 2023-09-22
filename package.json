@@ -36,5 +36,8 @@
     "seedDB": "yarn tsc; node dist/cmd/db.js seed",
     "backupDB": "yarn tsc; node dist/cmd/db.js backup"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16"
+  }
 }
