@@ -244,6 +244,7 @@ async function getUserWithRelationAndCentre(centreId: number, userId: number) {
         model: Avatar,
         as: "avatar",
       },
+      attributes: { exclude: ["password"] },
     });
 
     if (!user) {
@@ -269,6 +270,7 @@ async function getUserWithRelationAndCentre(centreId: number, userId: number) {
     }
 
     return {
+      ...view.user,
       fullName: user.fullName,
       email: user.email,
       contact: view.contact,
