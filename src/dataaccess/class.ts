@@ -276,15 +276,37 @@ async function enrollStudentInClass(
 ): Promise<boolean> {
   try {
     await verifyStudentAndClassesExist(centreId, classIds, studentId);
+    const classIdsDict = classIds.reduce(
+      (dict: { [key: number]: boolean }, classId) => {
+        dict[classId] = true;
+        return dict;
+      },
+      {}
+    );
+    const idsFound: { [key: number]: boolean } = {};
 
-    for (const classId of classIds) {
-      const studentClass = await StudentClass.findOne({
+    const studentClasses = await StudentClass.findAll({
+      where: {
+        studentId: studentId,
+      },
+    });
+
+    for (const studentClass of studentClasses) {
+      if (classIdsDict[studentClass.classId]) {
+        idsFound[studentClass.classId] = true;
+        continue;
+      }
+
+      await StudentClass.destroy({
         where: {
           studentId: studentId,
-          classId: classIds,
+          classId: studentClass.classId,
         },
       });
-      if (studentClass) {
+    }
+
+    for (const classId of classIds) {
+      if (idsFound[classId]) {
         continue;
       }
 
@@ -328,15 +350,37 @@ async function assignTutorToClass(
 ): Promise<boolean> {
   try {
     await verifyTutorAndClassesExist(centreId, classIds, tutorId);
+    const classIdsDict = classIds.reduce(
+      (dict: { [key: number]: boolean }, classId) => {
+        dict[classId] = true;
+        return dict;
+      },
+      {}
+    );
+    const idsFound: { [key: number]: boolean } = {};
 
-    for (const classId of classIds) {
-      const tutorClass = await TutorClass.findOne({
+    const tutorClasses = await TutorClass.findAll({
+      where: {
+        tutorId: tutorId,
+      },
+    });
+
+    for (const tutorClass of tutorClasses) {
+      if (classIdsDict[tutorClass.classId]) {
+        idsFound[tutorClass.classId] = true;
+        continue;
+      }
+
+      await TutorClass.destroy({
         where: {
           tutorId: tutorId,
-          classId: classId,
+          classId: tutorClass.classId,
         },
       });
-      if (tutorClass) {
+    }
+
+    for (const classId of classIds) {
+      if (idsFound[classId]) {
         continue;
       }
 
@@ -345,6 +389,7 @@ async function assignTutorToClass(
         classId: classId,
       });
     }
+
     return true;
   } catch (error: any) {
     throw new Error(`Error assigning tutor to class: ${error}`);

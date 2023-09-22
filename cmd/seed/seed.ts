@@ -1,8 +1,4 @@
-import {
-  assignTutorToClass,
-  createClass,
-  enrollStudentInClass,
-} from "../../src/dataaccess/class";
+import { assignTutorToClass, createClass } from "../../src/dataaccess/class";
 import { createNote } from "../../src/dataaccess/note";
 import {
   createStudentUser,
