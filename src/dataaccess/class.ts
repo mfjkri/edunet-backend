@@ -382,7 +382,7 @@ async function assignTutorToClass(
     for (const classId of classIds) {
       const otherTutorClasses = await TutorClass.findAll({
         where: {
-          classId: classIds,
+          classId: classId,
         },
       });
 
