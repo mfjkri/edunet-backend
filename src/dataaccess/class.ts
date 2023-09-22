@@ -271,26 +271,28 @@ async function getAllClasses(): Promise<Class[]> {
 
 async function enrollStudentInClass(
   centreId: number,
-  classId: number,
+  classIds: number[],
   studentId: number
 ): Promise<boolean> {
   try {
-    await verifyStudentAndClassExist(centreId, classId, studentId);
+    await verifyStudentAndClassesExist(centreId, classIds, studentId);
 
-    const studentClass = await StudentClass.findOne({
-      where: {
+    for (const classId of classIds) {
+      const studentClass = await StudentClass.findOne({
+        where: {
+          studentId: studentId,
+          classId: classIds,
+        },
+      });
+      if (studentClass) {
+        continue;
+      }
+
+      await StudentClass.create({
         studentId: studentId,
         classId: classId,
-      },
-    });
-    if (studentClass) {
-      return false;
+      });
     }
-
-    await StudentClass.create({
-      studentId: studentId,
-      classId: classId,
-    });
 
     return true;
   } catch (error: any) {
@@ -321,27 +323,28 @@ async function unrollStudentFromClass(
 
 async function assignTutorToClass(
   centreId: number,
-  classId: number,
+  classIds: number[],
   tutorId: number
 ): Promise<boolean> {
   try {
-    await verifyTutorAndClassExist(centreId, classId, tutorId);
+    await verifyTutorAndClassesExist(centreId, classIds, tutorId);
 
-    const tutorClass = await TutorClass.findOne({
-      where: {
+    for (const classId of classIds) {
+      const tutorClass = await TutorClass.findOne({
+        where: {
+          tutorId: tutorId,
+          classId: classId,
+        },
+      });
+      if (tutorClass) {
+        continue;
+      }
+
+      await TutorClass.create({
         tutorId: tutorId,
         classId: classId,
-      },
-    });
-    if (tutorClass) {
-      return false;
+      });
     }
-
-    await TutorClass.create({
-      tutorId: tutorId,
-      classId: classId,
-    });
-
     return true;
   } catch (error: any) {
     throw new Error(`Error assigning tutor to class: ${error}`);
@@ -384,6 +387,28 @@ async function verifyClassExist(
   }
 }
 
+async function verifyStudentAndClassesExist(
+  centreId: number,
+  classIds: number[],
+  studentId: number
+): Promise<void> {
+  for (const classId of classIds) {
+    await verifyClassExist(centreId, classId);
+  }
+
+  const student = await Student.findOne({
+    where: {
+      centreId: centreId,
+      id: studentId,
+    },
+  });
+  if (!student) {
+    throw new Error(
+      `Student does not exist in centre ${centreId}: ${studentId}`
+    );
+  }
+}
+
 async function verifyStudentAndClassExist(
   centreId: number,
   classId: number,
@@ -401,6 +426,26 @@ async function verifyStudentAndClassExist(
     throw new Error(
       `Student does not exist in centre ${centreId}: ${studentId}`
     );
+  }
+}
+
+async function verifyTutorAndClassesExist(
+  centreId: number,
+  classIds: number[],
+  tutorId: number
+): Promise<void> {
+  for (const classId of classIds) {
+    await verifyClassExist(centreId, classId);
+  }
+
+  const tutor = await Tutor.findOne({
+    where: {
+      centreId: centreId,
+      id: tutorId,
+    },
+  });
+  if (!tutor) {
+    throw new Error(`Tutor does not exist in centre ${centreId}: ${tutorId}`);
   }
 }
 

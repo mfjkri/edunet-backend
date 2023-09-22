@@ -2,7 +2,7 @@ import { castParams } from "../params";
 
 export interface AssignTutorParams {
   tutorId: number;
-  classId: number;
+  classIds: number[];
 }
 
 export function parseParams(json: any): AssignTutorParams | undefined {
@@ -12,7 +12,7 @@ export function parseParams(json: any): AssignTutorParams | undefined {
 const typeMap: any = {
   props: [
     { json: "tutorId", js: "tutorId", typ: 0 },
-    { json: "classId", js: "classId", typ: 0 },
+    { json: "classIds", js: "classIds", typ: { arrayItems: 0 } },
   ],
   additional: false,
 };

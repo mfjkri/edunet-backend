@@ -1,11 +1,12 @@
 import { Router } from "express";
 
+import ViewStudentRouter from "./viewStudent";
+import ViewStudentsRouter from "./viewStudents";
 import AddStudentRouter from "./addStudent";
 import DeleteStudentRouter from "./deleteStudent";
 import EditStudentRouter from "./editStudent";
 import RemoveStudentRouter from "./removeStudent";
-import ViewStudentRouter from "./viewStudent";
-import ViewStudentsRouter from "./viewStudents";
+import EnrollStudentRouter from "./enrollStudent";
 import checkAdmin from "../../../middleware/checkAdmin";
 import checkStudent from "../../../middleware/checkStudent";
 import checkTutor from "../../../middleware/checkTutor";
@@ -24,7 +25,8 @@ router.use(
   AddStudentRouter,
   DeleteStudentRouter,
   EditStudentRouter,
-  RemoveStudentRouter
+  RemoveStudentRouter,
+  EnrollStudentRouter
 );
 
 export default router;

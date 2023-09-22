@@ -17,7 +17,7 @@ export default async function handleAssignTutor(
     const user: User = req.body.user;
     const response = await assignTutorToClass(
       user.centreId,
-      params.classId,
+      params.classIds,
       params.tutorId
     );
 
