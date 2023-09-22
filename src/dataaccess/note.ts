@@ -1,4 +1,6 @@
 import Note from "../models/note";
+import Student from "../models/student";
+import Tutor from "../models/tutor";
 
 async function createNote(
   centreId: number,
@@ -80,4 +82,48 @@ async function getNotesByUserId(
   }
 }
 
-export { createNote, deleteNote, editNote, getNoteById, getNotesByUserId };
+async function getNotesByStudentId(
+  centreId: number,
+  studentId: number
+): Promise<Note[]> {
+  try {
+    const student = await Student.findOne({
+      where: { centreId: centreId, id: studentId },
+    });
+    if (!student) {
+      throw new Error(`Student with ID ${studentId} not found`);
+    }
+
+    return await getNotesByUserId(centreId, student.userId);
+  } catch (error: any) {
+    throw new Error(`Failed to get note: ${error.message}`);
+  }
+}
+
+async function getNotesByTutorId(
+  centreId: number,
+  tutorId: number
+): Promise<Note[]> {
+  try {
+    const tutor = await Tutor.findOne({
+      where: { centreId: centreId, id: tutorId },
+    });
+    if (!tutor) {
+      throw new Error(`Tutor with ID ${tutorId} not found`);
+    }
+
+    return await getNotesByUserId(centreId, tutor.userId);
+  } catch (error: any) {
+    throw new Error(`Failed to get note: ${error.message}`);
+  }
+}
+
+export {
+  createNote,
+  deleteNote,
+  editNote,
+  getNoteById,
+  getNotesByUserId,
+  getNotesByStudentId,
+  getNotesByTutorId,
+};

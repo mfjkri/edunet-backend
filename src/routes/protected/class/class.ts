@@ -5,6 +5,8 @@ import DeleteClassRouter from "./deleteClass";
 import EditClassRouter from "./editClass";
 import ViewClassRouter from "./viewClass";
 import ViewClassesRouter from "./viewClasses";
+import ViewClassesByStudentId from "./viewClassesByStudentId";
+import ViewClassesByTutorId from "./viewClassesByTutorId";
 import checkAdmin from "../../../middleware/checkAdmin";
 import checkTutor from "../../../middleware/checkTutor";
 
@@ -19,7 +21,9 @@ router.use(
   AddTutorRouter,
   DeleteClassRouter,
   EditClassRouter,
-  ViewClassesRouter
+  ViewClassesRouter,
+  ViewClassesByStudentId,
+  ViewClassesByTutorId
 );
 
 export default router;
