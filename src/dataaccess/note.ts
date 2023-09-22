@@ -1,41 +1,18 @@
 import Note from "../models/note";
 
-export async function createNote(
+async function createNote(
   centreId: number,
   userId: number,
   content: string
 ): Promise<Note> {
   try {
-    return await Note.create({ centreId, userId: userId, content });
+    return await Note.create({
+      centreId: centreId,
+      userId: userId,
+      content: content,
+    });
   } catch (error: any) {
     throw new Error(`Failed to create note: ${error.message}`);
-  }
-}
-
-async function getNoteById(centreId: number, noteId: number): Promise<Note> {
-  try {
-    const note = await Note.findOne({
-      where: { centreId: centreId, id: noteId },
-    });
-
-    if (!note) {
-      throw new Error(`Note with ID ${noteId} not found`);
-    }
-
-    return note;
-  } catch (error: any) {
-    throw new Error(`Failed to get note: ${error.message}`);
-  }
-}
-
-async function getNotesByUserId(centreId: number, userId: number) {
-  try {
-    return await Note.findAll({
-      where: { centreId: centreId, userId: userId },
-      order: [["createdAt", "DESC"]],
-    });
-  } catch (error: any) {
-    throw new Error(`Failed to get note: ${error.message}`);
   }
 }
 
@@ -73,4 +50,34 @@ async function editNote(
   }
 }
 
-export { deleteNote, editNote, getNoteById, getNotesByUserId };
+async function getNoteById(centreId: number, noteId: number): Promise<Note> {
+  try {
+    const note = await Note.findOne({
+      where: { centreId: centreId, id: noteId },
+    });
+
+    if (!note) {
+      throw new Error(`Note with ID ${noteId} not found`);
+    }
+
+    return note;
+  } catch (error: any) {
+    throw new Error(`Failed to get note: ${error.message}`);
+  }
+}
+
+async function getNotesByUserId(
+  centreId: number,
+  userId: number
+): Promise<Note[]> {
+  try {
+    return await Note.findAll({
+      where: { centreId: centreId, userId: userId },
+      order: [["createdAt", "DESC"]],
+    });
+  } catch (error: any) {
+    throw new Error(`Failed to get note: ${error.message}`);
+  }
+}
+
+export { createNote, deleteNote, editNote, getNoteById, getNotesByUserId };

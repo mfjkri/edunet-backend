@@ -15,8 +15,12 @@ export default async function handleViewStudent(
 ) {
   try {
     const user: User = req.body.user;
-    const id = req.params.id;
-    const response = await getStudentViewById(user.centreId, parseInt(id));
+    const id = parseInt(req.params.id);
+
+    const response = await getStudentViewById(user.centreId, id);
+    if (user.id !== response.userId && user.type === "student") {
+      return res.status(403).json({ message: "Forbidden" });
+    }
 
     res.status(201).json({
       message: SUCCESS_VIEW_STUDENT,
