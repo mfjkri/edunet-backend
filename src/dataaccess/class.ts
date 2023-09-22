@@ -380,10 +380,6 @@ async function assignTutorToClass(
     }
 
     for (const classId of classIds) {
-      if (idsFound[classId]) {
-        continue;
-      }
-
       const otherTutorClasses = await TutorClass.findAll({
         where: {
           classId: classIds,
@@ -396,6 +392,10 @@ async function assignTutorToClass(
         }
 
         await otherTutorClass.destroy();
+      }
+
+      if (idsFound[classId]) {
+        continue;
       }
 
       await TutorClass.create({
