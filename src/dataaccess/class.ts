@@ -322,7 +322,7 @@ async function enrollStudentInClass(
   }
 }
 
-async function unrollStudentFromClass(
+async function removeStudentFromClass(
   centreId: number,
   classId: number,
   studentId: number
@@ -382,6 +382,20 @@ async function assignTutorToClass(
     for (const classId of classIds) {
       if (idsFound[classId]) {
         continue;
+      }
+
+      const otherTutorClasses = await TutorClass.findAll({
+        where: {
+          classId: classIds,
+        },
+      });
+
+      for (const otherTutorClass of otherTutorClasses) {
+        if (otherTutorClass.tutorId === tutorId) {
+          continue;
+        }
+
+        await otherTutorClass.destroy();
       }
 
       await TutorClass.create({
@@ -523,7 +537,7 @@ export {
   getClassesByTutorId,
   getAllClasses,
   enrollStudentInClass,
-  unrollStudentFromClass,
+  removeStudentFromClass,
   assignTutorToClass,
   unassignTutorFromClass,
 };

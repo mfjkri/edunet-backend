@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { RemoveStudentParams } from "../../params/student/removeStudent";
-import { unrollStudentFromClass } from "../../dataaccess/class";
+import { removeStudentFromClass } from "../../dataaccess/class";
 import User from "../../models/user";
 
 const SUCCESS_REMOVE_STUDENT = "Student unassigned successfully";
@@ -15,7 +15,7 @@ export default async function handleRemoveStudent(
 ) {
   try {
     const user: User = req.body.user;
-    const response = await unrollStudentFromClass(
+    const response = await removeStudentFromClass(
       user.centreId,
       params.classId,
       params.studentId
