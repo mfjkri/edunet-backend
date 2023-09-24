@@ -357,29 +357,8 @@ async function assignTutorToClass(
       },
       {}
     );
-    const idsFound: { [key: number]: boolean } = {};
-
-    const tutorClasses = await TutorClass.findAll({
-      where: {
-        tutorId: tutorId,
-      },
-    });
-
-    for (const tutorClass of tutorClasses) {
-      if (classIdsDict[tutorClass.classId]) {
-        idsFound[tutorClass.classId] = true;
-        continue;
-      }
-
-      await TutorClass.destroy({
-        where: {
-          tutorId: tutorId,
-          classId: tutorClass.classId,
-        },
-      });
-    }
-
     for (const classId of classIds) {
+      let alreadyAssigned = false;
       const otherTutorClasses = await TutorClass.findAll({
         where: {
           classId: classId,
@@ -388,13 +367,14 @@ async function assignTutorToClass(
 
       for (const otherTutorClass of otherTutorClasses) {
         if (otherTutorClass.tutorId === tutorId) {
+          alreadyAssigned = true;
           continue;
         }
 
         await otherTutorClass.destroy();
       }
 
-      if (idsFound[classId]) {
+      if (alreadyAssigned) {
         continue;
       }
 
