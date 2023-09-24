@@ -4,11 +4,9 @@ export interface EditStudentParams {
   studentId: number;
 
   studentFullName: string;
-  studentEmail: string;
   studentContact: string;
 
   parentFullName: string;
-  parentEmail: string;
   parentContact: string;
 }
 
@@ -21,11 +19,9 @@ const typeMap: any = {
     { json: "studentId", js: "studentId", typ: 0 },
 
     { json: "studentFullName", js: "studentFullName", typ: "" },
-    { json: "studentEmail", js: "studentEmail", typ: "" },
     { json: "studentContact", js: "studentContact", typ: "" },
 
     { json: "parentFullName", js: "parentFullName", typ: "" },
-    { json: "parentEmail", js: "parentEmail", typ: "" },
     { json: "parentContact", js: "parentContact", typ: "" },
   ],
   additional: false,
