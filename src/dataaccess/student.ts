@@ -5,6 +5,8 @@ import Class from "../models/class";
 import Note from "../models/note";
 import Parent from "../models/parent";
 import Student from "../models/student";
+import StudentClass from "../models/studentClass";
+import TutorClass from "../models/tutorClass";
 import User from "../models/user";
 
 async function createStudent(
@@ -242,6 +244,42 @@ async function getStudentsByParentId(
   }
 }
 
+async function getStudentsByTutorId(
+  centreId: number,
+  tutorId: number
+): Promise<Student[]> {
+  try {
+    const tutorClasses = await TutorClass.findAll({
+      where: {
+        tutorId: tutorId,
+      },
+    });
+    const foundStudentIds: any = {};
+    const studentIds: number[] = [];
+    await Promise.all(
+      tutorClasses.map(async (tutorClass) => {
+        const studentClasses = await StudentClass.findAll({
+          where: {
+            classId: tutorClass.classId,
+          },
+        });
+        studentClasses.forEach((studentClass) => {
+          if (foundStudentIds[studentClass.studentId]) {
+            return;
+          }
+          studentIds.push(studentClass.studentId);
+          foundStudentIds[studentClass.studentId] = true;
+        });
+      })
+    );
+    return await Promise.all(
+      studentIds.map(async (id) => await getStudentViewById(centreId, id))
+    );
+  } catch (error: any) {
+    throw new Error(`Error getting students by tutor ID: ${error}`);
+  }
+}
+
 async function getAllStudents(): Promise<Student[]> {
   try {
     return await Student.findAll();
@@ -259,5 +297,6 @@ export {
   getStudentsByCentreId,
   getStudentViewByUserId,
   getStudentsByParentId,
+  getStudentsByTutorId,
   getAllStudents,
 };

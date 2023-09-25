@@ -10,11 +10,12 @@ const router: Router = Router();
 
 router.use(
   "/assessment",
+  ViewAssessmentsRouter,
+
   checkTutor,
   AddAssessmentRouter,
   EditAssessmentRouter,
-  DeleteAssessmentRouter,
-  ViewAssessmentsRouter
+  DeleteAssessmentRouter
 );
 
 export default router;

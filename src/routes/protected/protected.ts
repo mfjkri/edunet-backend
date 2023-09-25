@@ -7,11 +7,13 @@ import ClassRouter from "./class/class";
 import NoteRouter from "./note/note";
 import StudentRouter from "./student/student";
 import TutorRouter from "./tutor/tutor";
+import simulateLag from "../../middleware/simulateLag";
 
 const router: Router = Router();
 
 router.use(
   "/api",
+  simulateLag,
   authenticateToken,
   AssessmentRouter,
   AuthRouter,

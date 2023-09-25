@@ -268,8 +268,11 @@ async function getUserWithRelationAndCentre(centreId: number, userId: number) {
         throw new Error(`Invalid user type: ${user.type}`);
     }
 
+    console.log(view);
     return {
       ...user.toJSON(),
+      studentId: view.id,
+      tutorId: view.id,
       fullName: user.fullName,
       email: user.email,
       contact: view.contact,

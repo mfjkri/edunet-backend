@@ -8,18 +8,21 @@ import UnassignTutorRouter from "./unassignTutor";
 import ViewTutorRouter from "./viewTutor";
 import ViewTutorsRouter from "./viewTutors";
 import checkAdmin from "../../../middleware/checkAdmin";
+import checkTutor from "../../../middleware/checkTutor";
 
 const router: Router = Router();
 
 router.use(
   "/tutor",
+  checkTutor,
+  ViewTutorRouter,
+
   checkAdmin,
   AddTutorRouter,
   AssignTutorRouter,
   DeleteTutorRouter,
   EditTutorRouter,
   UnassignTutorRouter,
-  ViewTutorRouter,
   ViewTutorsRouter
 );
 

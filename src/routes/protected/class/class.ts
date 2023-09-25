@@ -9,21 +9,24 @@ import ViewClassesByStudentId from "./viewClassesByStudentId";
 import ViewClassesByTutorId from "./viewClassesByTutorId";
 import checkAdmin from "../../../middleware/checkAdmin";
 import checkTutor from "../../../middleware/checkTutor";
+import checkStudent from "../../../middleware/checkStudent";
 
 const router: Router = Router();
 
 router.use(
   "/class",
+  checkStudent,
+  ViewClassesByStudentId,
+
   checkTutor,
   ViewClassRouter,
+  ViewClassesByTutorId,
 
   checkAdmin,
   AddTutorRouter,
   DeleteClassRouter,
   EditClassRouter,
-  ViewClassesRouter,
-  ViewClassesByStudentId,
-  ViewClassesByTutorId
+  ViewClassesRouter
 );
 
 export default router;
