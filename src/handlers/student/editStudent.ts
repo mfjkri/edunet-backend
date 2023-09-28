@@ -22,7 +22,7 @@ export default async function handleEditStudent(
       params.studentFullName,
       params.studentContact
     );
-    const parentResponse = await editParentById(
+    await editParentById(
       user.centreId,
       studentResponse.parentId,
       params.parentFullName,
@@ -31,8 +31,6 @@ export default async function handleEditStudent(
 
     res.status(201).json({
       message: SUCCESS_EDITED_STUDENT,
-      student: studentResponse,
-      parent: parentResponse,
     });
   } catch (error: any) {
     res

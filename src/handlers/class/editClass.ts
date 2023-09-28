@@ -15,7 +15,7 @@ export default async function handleEditClass(
 ) {
   try {
     const user: User = req.body.user;
-    const response = await editClassById(
+    await editClassById(
       user.centreId,
       params.classId,
       params.name,
@@ -24,7 +24,7 @@ export default async function handleEditClass(
       params.venue
     );
 
-    res.status(201).json({ message: SUCCESS_EDITED_CLASS, class: response });
+    res.status(201).json({ message: SUCCESS_EDITED_CLASS });
   } catch (error: any) {
     res
       .status(500)

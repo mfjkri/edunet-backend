@@ -15,14 +15,14 @@ export default async function handleEditTutor(
 ) {
   try {
     const user: User = req.body.user;
-    const response = await editTutorById(
+    await editTutorById(
       user.centreId,
       params.tutorId,
       params.fullName,
       params.contact
     );
 
-    res.status(201).json({ message: SUCCESS_EDITED_TUTOR, tutor: response });
+    res.status(201).json({ message: SUCCESS_EDITED_TUTOR });
   } catch (error: any) {
     res
       .status(500)
