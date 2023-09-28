@@ -55,11 +55,11 @@ export function init(db?: Sequelize) {
       },
 
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         allowNull: false,
       },
       content: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(2500),
         allowNull: false,
       },
 
