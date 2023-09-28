@@ -4,6 +4,7 @@ import authenticateToken from "../../middleware/auth";
 import AuthRouter from "./auth/auth";
 import AssessmentRouter from "./assessment/assessment";
 import ClassRouter from "./class/class";
+import MessageRouter from "./message/message";
 import NoteRouter from "./note/note";
 import StudentRouter from "./student/student";
 import TutorRouter from "./tutor/tutor";
@@ -18,6 +19,7 @@ router.use(
   AssessmentRouter,
   AuthRouter,
   ClassRouter,
+  MessageRouter,
   NoteRouter,
   StudentRouter,
   TutorRouter
