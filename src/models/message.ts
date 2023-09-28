@@ -84,7 +84,13 @@ export function init(db?: Sequelize) {
   });
 
   Message.belongsTo(User, {
-    foreignKey: "userId",
+    foreignKey: "senderId",
     onDelete: "CASCADE",
+    as: "sender",
+  });
+  Message.belongsTo(User, {
+    foreignKey: "receiverId",
+    onDelete: "CASCADE",
+    as: "receiver",
   });
 }

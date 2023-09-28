@@ -18,9 +18,11 @@ export default async function handleViewMessages(
     const id = req.params.id;
     const response = await getMessages(user.centreId, user.id, parseInt(id));
 
+    console.log(response);
+
     res.status(201).json({
       message: SUCCESS_VIEW_MESSAGES,
-      messages: response,
+      ...response,
     });
   } catch (error: any) {
     res.status(500).json({

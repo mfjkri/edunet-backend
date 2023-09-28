@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import User from "../../models/user";
 import getTokens from "./jwt";
 import { LoginParams } from "../../params/auth/login";
+import { getUserWithRelationAndCentre } from "../../dataaccess/user";
 
 const SUCCESS_USER_LOGGED_IN = "User logged in successfully";
 
@@ -31,15 +32,11 @@ export default async function handleLogin(
     }
 
     const tokens = getTokens(user);
+    const fullUser = await getUserWithRelationAndCentre(user.centreId, user.id);
     res.json({
       message: SUCCESS_USER_LOGGED_IN,
       tokens,
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        type: user.type,
-      },
+      user: fullUser,
     });
   } catch (error: any) {
     res

@@ -3,7 +3,10 @@ import { Request, Response } from "express";
 import User from "../../models/user";
 import getTokens from "./jwt";
 import { RegisterParams } from "../../params/auth/register";
-import { createUserWithCentreAndAdmin } from "../../dataaccess/user";
+import {
+  createUserWithCentreAndAdmin,
+  getUserWithRelationAndCentre,
+} from "../../dataaccess/user";
 
 const SUCCESS_USER_REGISTERED = "User registered successfully";
 
@@ -41,10 +44,14 @@ export default async function handleRegister(
     );
 
     const tokens = getTokens(response.adminUser);
+    const fullUser = await getUserWithRelationAndCentre(
+      response.adminUser.centreId,
+      response.adminUser.id
+    );
     res.status(201).json({
       message: SUCCESS_USER_REGISTERED,
       tokens,
-      user: response.adminUser,
+      user: fullUser,
     });
   } catch (error: any) {
     res
