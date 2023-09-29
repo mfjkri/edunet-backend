@@ -80,7 +80,7 @@ async function createStudentUser(
         type: "parent",
         centreId: centreId,
       });
-      sendEmailWithPassword(parentEmail, parentPassword);
+      await sendEmailWithPassword(parentEmail, parentPassword);
     }
 
     if (!parent) {
@@ -109,7 +109,7 @@ async function createStudentUser(
         type: "student",
         centreId: centreId,
       });
-      sendEmailWithPassword(studentEmail, studentPassword);
+      await sendEmailWithPassword(studentEmail, studentPassword);
     }
 
     if (!student) {
@@ -155,6 +155,8 @@ async function createTutorUser(
       userId: tutorUser.id,
       centreId: centreId,
     });
+
+    await sendEmailWithPassword(tutorEmail, tutorPassword);
 
     return { tutorUser, tutor };
   } catch (error: any) {
@@ -308,6 +310,20 @@ async function getUserWithRelationAndCentreByEmail(
   }
 }
 
+async function getUsersWithRelationAndCentreByCentreId(centerId: number) {
+  try {
+    const users = await User.findAll({ where: { centreId: centerId } });
+
+    return await Promise.all(
+      users.map(
+        async (user) => await getUserWithRelationAndCentre(centerId, user.id)
+      )
+    );
+  } catch (error: any) {
+    throw new Error(`Error getting user with relation and centre: ${error}`);
+  }
+}
+
 export {
   createUserWithCentreAndAdmin,
   createStudentUser,
@@ -316,4 +332,5 @@ export {
   deleteTutorUser,
   getUserWithRelationAndCentre,
   getUserWithRelationAndCentreByEmail,
+  getUsersWithRelationAndCentreByCentreId,
 };

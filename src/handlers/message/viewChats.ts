@@ -18,8 +18,6 @@ export default async function handleViewChats(
     const id = req.params.id;
     const response = await getChats(user.id);
 
-    console.log(response);
-
     res.status(201).json({
       message: SUCCESS_VIEW_CHATS,
       chats: response,

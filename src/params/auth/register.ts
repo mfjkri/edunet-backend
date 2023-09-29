@@ -6,7 +6,6 @@ export interface RegisterParams {
   email: string;
   password: string;
   contact: string;
-  type: string;
 }
 
 export function parseParams(json: any): RegisterParams | undefined {
@@ -20,7 +19,6 @@ const typeMap: any = {
     { json: "email", js: "email", typ: "" },
     { json: "password", js: "password", typ: "" },
     { json: "contact", js: "contact", typ: "" },
-    { json: "type", js: "type", typ: "" },
   ],
   additional: false,
 };

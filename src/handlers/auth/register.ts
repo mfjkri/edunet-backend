@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import User from "../../models/user";
+import Centre from "../../models/centre";
 import getTokens from "./jwt";
 import { RegisterParams } from "../../params/auth/register";
 import {
@@ -11,6 +12,7 @@ import {
 const SUCCESS_USER_REGISTERED = "User registered successfully";
 
 const ERROR_USER_ALREADY_EXIST = "User already exists";
+const ERROR_CENTRE_ALREADY_EXIST = "Centre already exists";
 const ERROR_INVALID_EMAIL_FORMAT = "Invalid email format";
 const ERROR_FAILED_TO_REGISTER_USER = "Failed to register user";
 
@@ -20,19 +22,17 @@ export default async function handleRegister(
   params: RegisterParams
 ) {
   try {
-    if (
-      (await User.findOne({ where: { fullName: params.fullName } })) ||
-      (await User.findOne({ where: { email: params.email.toLowerCase() } }))
-    ) {
+    if (await User.findOne({ where: { email: params.email.toLowerCase() } })) {
       return res.status(400).json({ message: ERROR_USER_ALREADY_EXIST });
+    }
+
+    if (await Centre.findOne({ where: { name: params.centreName } })) {
+      return res.status(400).json({ message: ERROR_CENTRE_ALREADY_EXIST });
     }
 
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(params.email)) {
       return res.status(400).json({ message: ERROR_INVALID_EMAIL_FORMAT });
-    }
-
-    if (params.type !== "admin") {
     }
 
     const response = await createUserWithCentreAndAdmin(
