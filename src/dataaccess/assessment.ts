@@ -120,7 +120,7 @@ async function getAssessmentsByStudentId(
   try {
     return await Assessment.findAll({
       where: { centreId: centreId, studentId: studentId },
-      order: [["createdAt", "DESC"]],
+      order: [["createdAt", "ASC"]],
     });
   } catch (error: any) {
     throw new Error(`Failed to get note: ${error.message}`);

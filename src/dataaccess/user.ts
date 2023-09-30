@@ -8,7 +8,7 @@ import { createParent, getParentViewByUserId } from "./parent";
 import { createStudent, getStudentViewByUserId } from "./student";
 import { createAdmin, getAdminsByUserId } from "./admin";
 import Tutor from "../models/tutor";
-import { sendEmailWithPassword } from "../utilities/mail";
+import { sendEmail, sendEmailWithPassword } from "../utilities/mail";
 import Avatar from "../models/avatar";
 import { getTutorViewByUserId } from "./tutor";
 import { enrollStudentInClass } from "./class";
@@ -58,6 +58,15 @@ async function createStudentUser(
   isEnrolled: boolean;
 }> {
   try {
+    const centre = await Centre.findOne({
+      where: {
+        id: centreId,
+      },
+    });
+    if (!centre) {
+      throw new Error(`Centre with ID ${centreId} not found`);
+    }
+
     let parentUser = await User.findOne({
       where: {
         email: parentEmail,
@@ -80,46 +89,46 @@ async function createStudentUser(
         type: "parent",
         centreId: centreId,
       });
-      await sendEmailWithPassword(parentEmail, parentPassword);
+      await sendEmailWithPassword(
+        parentFullName,
+        parentEmail,
+        parentPassword,
+        centre.name
+      );
     }
 
     if (!parent) {
       parent = await createParent(parentContact, parentUser.id, centreId);
     }
 
-    let studentUser = await User.findOne({
-      where: {
-        email: studentEmail,
-      },
+    const studentPassword = generatePassword();
+    const studentUser = await User.create({
+      fullName: studentFullName,
+      email: studentEmail,
+      password: studentPassword,
+      type: "student",
+      centreId: centreId,
     });
-    let student: Student | null = null;
+    const student = await createStudent(
+      studentContact,
+      studentUser.id,
+      parent.id,
+      centreId
+    );
+    await sendEmailWithPassword(
+      studentFullName,
+      studentEmail,
+      studentPassword,
+      centre.name
+    );
 
-    if (studentUser) {
-      student = await Student.findOne({
-        where: {
-          userId: studentUser.id,
-        },
-      });
-    } else {
-      const studentPassword = generatePassword();
-      studentUser = await User.create({
-        fullName: studentFullName,
-        email: studentEmail,
-        password: studentPassword,
-        type: "student",
-        centreId: centreId,
-      });
-      await sendEmailWithPassword(studentEmail, studentPassword);
-    }
-
-    if (!student) {
-      student = await createStudent(
-        studentContact,
-        studentUser.id,
-        parent.id,
-        centreId
-      );
-    }
+    await sendEmail(
+      parentEmail,
+      "New Student",
+      `Hi ${parentUser.fullName},
+       
+      ${studentFullName} has been added as your child.`
+    );
 
     const isEnrolled = await enrollStudentInClass(
       centreId,
@@ -140,8 +149,16 @@ async function createTutorUser(
   tutorContact: string
 ): Promise<{ tutorUser: User; tutor: Tutor }> {
   try {
-    const tutorPassword = generatePassword();
+    const centre = await Centre.findOne({
+      where: {
+        id: centreId,
+      },
+    });
+    if (!centre) {
+      throw new Error(`Centre with ID ${centreId} not found`);
+    }
 
+    const tutorPassword = generatePassword();
     const tutorUser = await User.create({
       fullName: tutorFullName,
       email: tutorEmail,
@@ -149,14 +166,17 @@ async function createTutorUser(
       type: "tutor",
       centreId: centreId,
     });
-
     const tutor = await Tutor.create({
       contact: tutorContact,
       userId: tutorUser.id,
       centreId: centreId,
     });
-
-    await sendEmailWithPassword(tutorEmail, tutorPassword);
+    await sendEmailWithPassword(
+      tutorFullName,
+      tutorEmail,
+      tutorPassword,
+      centre.name
+    );
 
     return { tutorUser, tutor };
   } catch (error: any) {

@@ -6,6 +6,7 @@ import User from "../../models/user";
 
 const SUCCESS_CREATED_TUTOR = "Tutor created successfully";
 
+const ERROR_TUTOR_ALREADY_EXIST = "Tutor already exists";
 const ERROR_FAILED_TO_CREATE_TUTOR = "Failed to create tutor";
 
 export default async function handleAddTutor(
@@ -15,6 +16,16 @@ export default async function handleAddTutor(
 ) {
   try {
     const user = req.body.user as User;
+
+    if (
+      await User.findOne({
+        where: {
+          email: params.email,
+        },
+      })
+    ) {
+      return res.status(400).json({ message: ERROR_TUTOR_ALREADY_EXIST });
+    }
 
     const response = await createTutorUser(
       user.centreId,

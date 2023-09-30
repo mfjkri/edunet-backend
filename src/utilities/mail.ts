@@ -16,7 +16,11 @@ export function initMailer() {
   });
 }
 
-async function sendEmail(toEmail: string, subject: string, text: string) {
+export async function sendEmail(
+  toEmail: string,
+  subject: string,
+  text: string
+) {
   const config = getConfig();
   if (config.EmailActive !== "true") {
     console.log("Email not active, not sending email");
@@ -47,15 +51,36 @@ export async function sendEmailWithOTP(userEmail: string, otp: string) {
 }
 
 export async function sendEmailWithPassword(
+  fullName: string,
   userEmail: string,
-  password: string
+  password: string,
+  centreName: string
 ) {
   await sendEmail(
     userEmail,
     "Account Created",
-    `Your login details are:
+    `Hi ${fullName},
+    \n\n Your login details are:
     \n    Email: ${userEmail}
     \n    Password: ${password}
-    \n\nPlease reset your password as soon as possible.`
+    \n\nPlease reset your password as soon as possible.
+    \n\nRegards,
+    \n${centreName}`
+  );
+}
+
+export async function sendEmailWithNewChild(
+  fullName: string,
+  userEmail: string,
+  childFullName: string,
+  centreName: string
+) {
+  await sendEmail(
+    userEmail,
+    "New Child Added",
+    `Hi ${fullName},
+    \n\n Your child ${childFullName} has been added to your account.
+    \n\nRegards,
+    \n${centreName}`
   );
 }

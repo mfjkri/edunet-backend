@@ -15,16 +15,14 @@ export default async function handleDeleteAssessment(
 ) {
   try {
     const user: User = req.body.user;
-    const response = await deleteAssessment(
+    await deleteAssessment(
       user.centreId,
       user.id,
       params.classId,
       params.assessmentId
     );
 
-    res
-      .status(201)
-      .json({ message: SUCCESS_DELETE_ASSESSMENT, isDeleted: response });
+    res.status(201).json({ message: SUCCESS_DELETE_ASSESSMENT });
   } catch (error: any) {
     res.status(500).json({
       message: ERROR_FAILED_TO_DELETE_ASSESSMENT,
