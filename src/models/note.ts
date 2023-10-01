@@ -30,10 +30,12 @@ export default class Note extends Model<
 
   declare readonly centre?: Centre;
   declare readonly user?: User;
+  declare readonly creator?: User;
 
   declare static associations: {
     centre: Association<Note, Centre>;
     user: Association<Note, User>;
+    creator: Association<Note, User>;
   };
 }
 
@@ -99,5 +101,11 @@ export function init(db?: Sequelize) {
   User.hasMany(Note, {
     foreignKey: "userId",
     as: "notes",
+  });
+
+  Note.belongsTo(User, {
+    foreignKey: "creatorId",
+    onDelete: "CASCADE",
+    as: "creator",
   });
 }

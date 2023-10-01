@@ -1,6 +1,7 @@
 import Note from "../models/note";
 import Student from "../models/student";
 import Tutor from "../models/tutor";
+import User from "../models/user";
 
 async function createNote(
   centreId: number,
@@ -139,6 +140,13 @@ async function getNotesByUserId(
     return await Note.findAll({
       where: { centreId: centreId, userId: userId },
       order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: User,
+          as: "creator",
+          attributes: ["id", "fullName"],
+        },
+      ],
     });
   } catch (error: any) {
     throw new Error(`Failed to get note: ${error.message}`);
