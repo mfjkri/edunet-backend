@@ -25,7 +25,7 @@ const admins = [
 
 const tutors = [
   {
-    fullName: "john",
+    fullName: "Alice Bob",
     contact: "23456789",
     email: "tutor@gmail.com",
     centre: "testCentre",
@@ -33,7 +33,7 @@ const tutors = [
     notes: [{ title: "Only Note", content: "No notes from me" }],
   },
   {
-    fullName: "bob",
+    fullName: "Bobby Fischer",
     contact: "34567890",
     email: "ff65a0e1-55d6-4bf0-9430-bb90aae6048a@mailslurp.com",
     centre: "testCentre",
@@ -51,8 +51,8 @@ const students = [
     studentFullName: "John Doe",
     studentEmail: "student@gmail.com",
     studentContact: "24680248",
-    parentFullName: "Muhammad Fikri",
-    parentEmail: "084acf1c-c2df-4c2e-88d1-a23955e0d356@mailslurp.com",
+    parentFullName: "Concerned Parent 1",
+    parentEmail: "parent@gmail.com",
     parentContact: "13579135",
     centre: "testCentre",
     classes: ["Class 1", "Class 2", "Class 3"],
@@ -63,10 +63,10 @@ const students = [
     ],
   },
   {
-    studentFullName: "Nini",
+    studentFullName: "Mary Jane",
     studentEmail: "a06f9427-8d33-4e35-8650-23c76c2a833f@mailslurp.com",
     studentContact: "36925814",
-    parentFullName: "RS",
+    parentFullName: "Cristopher Robin",
     parentEmail: "f2af4e69-b322-43fe-aae6-758639e9a6be@mailslurp.com",
     parentContact: "48024680",
     centre: "testCentre",
@@ -74,11 +74,11 @@ const students = [
     notes: [{ title: "YesNote", content: "This is a single note" }],
   },
   {
-    studentFullName: "Flory",
+    studentFullName: "Mariah Eh",
     studentEmail: "e5ce89e2-8f1c-49fb-947d-5c218a8136c5@mailslurp.com",
     studentContact: "51015202",
-    parentFullName: "RS",
-    parentEmail: "f2af4e69-b322-43fe-aae6-758639e9a6be@mailslurp.com",
+    parentFullName: "Concerned Parent 1",
+    parentEmail: "parent@gmail.com",
     parentContact: "48024680",
     centre: "testCentre",
     classes: ["Class 5"],

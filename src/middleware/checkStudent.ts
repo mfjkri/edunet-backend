@@ -5,6 +5,7 @@ const checkStudent = (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.body.user;
 
   if (
+    user.type === "parent" ||
     user.type === "student" ||
     user.type === "tutor" ||
     user.type === "admin"

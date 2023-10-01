@@ -3,6 +3,7 @@ import { Router } from "express";
 import ViewStudentRouter from "./viewStudent";
 import ViewStudentsRouter from "./viewStudents";
 import ViewStudentsByTutorIdRouter from "./viewStudentsByTutorId";
+import ViewStudentsByParentIdRouter from "./viewStudentsByParentId";
 import AddStudentRouter from "./addStudent";
 import DeleteStudentRouter from "./deleteStudent";
 import EditStudentRouter from "./editStudent";
@@ -22,6 +23,7 @@ router.use(
   checkTutor,
   ViewStudentsRouter,
   ViewStudentsByTutorIdRouter,
+  ViewStudentsByParentIdRouter,
 
   checkAdmin,
   AddStudentRouter,

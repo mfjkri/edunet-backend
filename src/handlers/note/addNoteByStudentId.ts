@@ -18,8 +18,8 @@ export default async function handleAddNoteByStudentId(
 
     const response = await createNoteByStudentId(
       user.centreId,
-      user.id,
       params.studentId,
+      user.id,
       params.title,
       params.content
     );
