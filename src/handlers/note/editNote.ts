@@ -15,7 +15,13 @@ export default async function handleEditNote(
 ) {
   try {
     const user: User = req.body.user;
-    await editNote(user.centreId, params.noteId, params.title, params.content);
+    await editNote(
+      user.centreId,
+      user.id,
+      params.noteId,
+      params.title,
+      params.content
+    );
 
     res.status(201).json({ message: SUCCESS_EDITED_NOTE });
   } catch (error: any) {

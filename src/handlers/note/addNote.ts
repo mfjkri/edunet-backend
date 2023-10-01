@@ -19,6 +19,7 @@ export default async function handleAddNote(
     const response = await createNote(
       user.centreId,
       params.userId,
+      user.id,
       params.title,
       params.content
     );

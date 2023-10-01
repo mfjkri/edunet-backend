@@ -20,6 +20,7 @@ export default class Note extends Model<
 
   declare centreId: number;
   declare userId: number;
+  declare creatorId: number;
 
   declare title: string;
   declare content: string;
@@ -50,6 +51,10 @@ export function init(db?: Sequelize) {
         allowNull: false,
       },
       userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      creatorId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -84,6 +89,10 @@ export function init(db?: Sequelize) {
 
   Note.belongsTo(User, {
     foreignKey: "userId",
+    onDelete: "CASCADE",
+  });
+  Note.belongsTo(User, {
+    foreignKey: "creatorId",
     onDelete: "CASCADE",
   });
 

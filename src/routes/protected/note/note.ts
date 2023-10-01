@@ -10,21 +10,23 @@ import ViewNotesRouter from "./viewNotes";
 import ViewNotesByStudentId from "./viewNotesByStudentId";
 import ViewNotesByTutorId from "./viewNotesByTutorId";
 import checkTutor from "../../../middleware/checkTutor";
+import checkStudent from "../../../middleware/checkStudent";
 
 const router: Router = Router();
 
 router.use(
   "/note",
+  checkStudent,
+  ViewNotesRouter,
+  ViewNotesByStudentId,
   checkTutor,
+  ViewNotesByTutorId,
   ViewNoteRouter,
   AddNoteRouter,
   AddNoteByStudentIdRouter,
   AddNoteByTutorIdRouter,
   EditNoteRouter,
-  DeleteNoteRouter,
-  ViewNotesRouter,
-  ViewNotesByStudentId,
-  ViewNotesByTutorId
+  DeleteNoteRouter
 );
 
 export default router;

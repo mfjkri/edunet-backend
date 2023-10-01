@@ -15,7 +15,7 @@ export default async function handleDeleteNote(
 ) {
   try {
     const user: User = req.body.user;
-    await deleteNote(user.centreId, params.noteId);
+    await deleteNote(user.centreId, user.id, params.noteId);
 
     res.status(201).json({ message: SUCCESS_DELETE_NOTE });
   } catch (error: any) {

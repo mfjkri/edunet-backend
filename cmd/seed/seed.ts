@@ -48,7 +48,7 @@ const tutors = [
 
 const students = [
   {
-    studentFullName: "Booboo",
+    studentFullName: "John Doe",
     studentEmail: "student@gmail.com",
     studentContact: "24680248",
     parentFullName: "Muhammad Fikri",
@@ -171,6 +171,7 @@ export default async function seed() {
       await createNote(
         centre.id,
         response.tutor.userId,
+        1,
         note.title,
         note.content
       );
@@ -200,6 +201,7 @@ export default async function seed() {
       await createNote(
         centre.id,
         response.student.userId,
+        1,
         note.title,
         note.content
       );

@@ -5,6 +5,7 @@ import Tutor from "../models/tutor";
 async function createNote(
   centreId: number,
   userId: number,
+  creatorId: number,
   title: string,
   content: string
 ): Promise<Note> {
@@ -12,6 +13,7 @@ async function createNote(
     return await Note.create({
       centreId: centreId,
       userId: userId,
+      creatorId: creatorId,
       title: title,
       content: content,
     });
@@ -23,6 +25,7 @@ async function createNote(
 async function createNoteByStudentId(
   centreId: number,
   studentId: number,
+  creatorId: number,
   title: string,
   content: string
 ): Promise<Note> {
@@ -33,7 +36,13 @@ async function createNoteByStudentId(
     if (!student) {
       throw new Error(`Student with ID ${studentId} not found`);
     }
-    return await createNote(centreId, student.userId, title, content);
+    return await createNote(
+      centreId,
+      student.userId,
+      creatorId,
+      title,
+      content
+    );
   } catch (error: any) {
     throw new Error(`Failed to create note: ${error.message}`);
   }
@@ -42,6 +51,7 @@ async function createNoteByStudentId(
 async function createNoteByTutorId(
   centreId: number,
   tutorId: number,
+  creatorId: number,
   title: string,
   content: string
 ): Promise<Note> {
@@ -52,16 +62,20 @@ async function createNoteByTutorId(
     if (!tutor) {
       throw new Error(`Tutor with ID ${tutorId} not found`);
     }
-    return await createNote(centreId, tutor.userId, title, content);
+    return await createNote(centreId, tutor.userId, creatorId, title, content);
   } catch (error: any) {
     throw new Error(`Failed to create note: ${error.message}`);
   }
 }
 
-async function deleteNote(centreId: number, noteId: number): Promise<boolean> {
+async function deleteNote(
+  centreId: number,
+  userId: number,
+  noteId: number
+): Promise<boolean> {
   try {
     const numDeletedRows = await Note.destroy({
-      where: { centreId: centreId, id: noteId },
+      where: { centreId: centreId, id: noteId, creatorId: userId },
     });
     return numDeletedRows > 0;
   } catch (error: any) {
@@ -71,13 +85,14 @@ async function deleteNote(centreId: number, noteId: number): Promise<boolean> {
 
 async function editNote(
   centreId: number,
+  userId: number,
   noteId: number,
   title: string,
   content: string
 ): Promise<Note> {
   try {
     const note = await Note.findOne({
-      where: { centreId: centreId, id: noteId },
+      where: { centreId: centreId, id: noteId, creatorId: userId },
     });
     if (!note) {
       throw new Error(`Note with ID ${noteId} not found`);
