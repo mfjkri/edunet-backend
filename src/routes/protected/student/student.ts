@@ -19,11 +19,11 @@ router.use(
   "/student",
   checkStudent,
   ViewStudentRouter,
+  ViewStudentsByParentIdRouter,
 
   checkTutor,
   ViewStudentsRouter,
   ViewStudentsByTutorIdRouter,
-  ViewStudentsByParentIdRouter,
 
   checkAdmin,
   AddStudentRouter,
