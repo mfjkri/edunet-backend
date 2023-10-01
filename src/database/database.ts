@@ -1,5 +1,5 @@
 import { Client } from "pg";
-import { Sequelize } from "sequelize";
+import { Options, Sequelize } from "sequelize";
 
 import pgtools from "pgtools";
 
@@ -16,6 +16,7 @@ export async function connectDB(dbName?: string) {
     Name: name,
     User: config.DBUsername,
     Password: config.DBPassword,
+    LocalDB: config.UseLocalDB,
   });
 
   try {
@@ -45,21 +46,25 @@ type Config = {
   Name: string;
   User: string;
   Password: string;
+  LocalDB: boolean;
 };
 
 function connect(config: Config) {
-  const { Hostname, Port, Name, User, Password } = config;
-  return new Sequelize(Name, User, Password, {
+  const { Hostname, Port, Name, User, Password, LocalDB } = config;
+  const options: Options = {
     host: Hostname,
     port: Port,
     dialect: "postgres",
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
-  });
+  };
+  if (!LocalDB) {
+    options.dialectOptions = {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    };
+  }
+  return new Sequelize(Name, User, Password, options);
 }
 export async function createBackupDB() {
   const config = getConfig();
