@@ -17,6 +17,9 @@ type Config = DBConfig & {
   EmailActive: string;
   EmailUsername: string;
   EmailPassword: string;
+
+  AWSAccessKeyId: string;
+  AWSSecretAccessKey: string;
 };
 
 export function loadEnv() {
@@ -45,6 +48,9 @@ export function getConfig(): Config {
     EMAIL_ACTIVE,
     EMAIL_USERNAME,
     EMAIL_PASSWORD,
+
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
   } = process.env;
   const dbConfig: DBConfig =
     USE_LOCAL_DB === "true"
@@ -74,6 +80,9 @@ export function getConfig(): Config {
     EmailActive: EMAIL_ACTIVE || "false",
     EmailUsername: EMAIL_USERNAME || "",
     EmailPassword: EMAIL_PASSWORD || "",
+
+    AWSAccessKeyId: AWS_ACCESS_KEY_ID || "",
+    AWSSecretAccessKey: AWS_SECRET_ACCESS_KEY || "",
   };
 }
 

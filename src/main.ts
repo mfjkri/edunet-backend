@@ -15,6 +15,7 @@ async function Main() {
   const expressApp = express();
 
   expressApp.use(cors());
+  expressApp.use(express.json({ limit: "50mb" }));
   expressApp.use(express.json());
 
   initRoutes(expressApp);
