@@ -56,7 +56,7 @@ export async function getLabels(base64_string: string) {
   const command = new DetectLabelsCommand(input);
   const response: any = await sendCommand(command);
 
-  return response.Labels.filter((data: any) => data.Confidence > 99)
-    .filter((data: any) => food.includes(data.Name))
-    .map((data: any) => data.Name);
+  return response.Labels.filter((data: any) => food.includes(data.Name)).map(
+    (data: any) => ({ name: data.Name, confidence: data.Confidence })
+  );
 }
