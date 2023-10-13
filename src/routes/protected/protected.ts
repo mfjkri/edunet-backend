@@ -8,6 +8,7 @@ import MessageRouter from "./message/message";
 import NoteRouter from "./note/note";
 import StudentRouter from "./student/student";
 import TutorRouter from "./tutor/tutor";
+import AnnouncementRouter from "./announcement/announcement";
 import simulateLag from "../../middleware/simulateLag";
 
 const router: Router = Router();
@@ -22,7 +23,8 @@ router.use(
   MessageRouter,
   NoteRouter,
   StudentRouter,
-  TutorRouter
+  TutorRouter,
+  AnnouncementRouter
 );
 
 export default router;

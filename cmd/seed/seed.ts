@@ -1,3 +1,4 @@
+import { createAnnouncement } from "../../src/dataaccess/announcement";
 import { assignTutorToClass, createClass } from "../../src/dataaccess/class";
 import { createNote } from "../../src/dataaccess/note";
 import {
@@ -31,6 +32,20 @@ const tutors = [
     centre: "testCentre",
     classes: ["Class 1", "Class 2", "Class 3"],
     notes: [{ title: "Only Note", content: "No notes from me" }],
+    announcements: [
+      {
+        title: "Announcement 1",
+        content: "This is an announcement",
+        centre: "testCentre",
+        class: "Class 1",
+      },
+      {
+        title: "Announcement 2",
+        content: "This is another announcement",
+        centre: "testCentre",
+        class: "Class 1",
+      },
+    ],
   },
   {
     fullName: "Bobby Fischer",
@@ -42,6 +57,20 @@ const tutors = [
       { title: "I Note", content: "This is a note" },
       { title: "II note", content: "This is another note" },
       { title: "III note", content: "This is a third note" },
+    ],
+    announcements: [
+      {
+        title: "Announcement 1",
+        content: "This is an announcement",
+        centre: "testCentre",
+        class: "Class 4",
+      },
+      {
+        title: "Announcement 2",
+        content: "This is another announcement",
+        centre: "testCentre",
+        class: "Class 4",
+      },
     ],
   },
 ];
@@ -182,6 +211,16 @@ export default async function seed() {
       tutor.classes.map((className) => centre.classes[className].id),
       response.tutor.id
     );
+
+    for (const announcement of tutor.announcements) {
+      await createAnnouncement(
+        centre.id,
+        centre.classes[announcement.class].id,
+        response.tutor.id,
+        announcement.title,
+        announcement.content
+      );
+    }
   }
 
   for (const student of students) {
