@@ -99,11 +99,11 @@ async function editNote(
       throw new Error(`Note with ID ${noteId} not found`);
     }
 
-    if (note.content) {
+    if (content) {
       note.content = content;
     }
 
-    if (note.title) {
+    if (title) {
       note.title = title;
     }
 

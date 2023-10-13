@@ -15,7 +15,7 @@ export default async function handleDeleteAnnouncement(
 ) {
   try {
     const user: User = req.body.user;
-    await deleteAnnouncement(user.centreId, user.id, params.announcementId);
+    await deleteAnnouncement(user.centreId, params.announcementId);
 
     res.status(201).json({ message: SUCCESS_DELETE_ANNOUNCEMENT });
   } catch (error: any) {

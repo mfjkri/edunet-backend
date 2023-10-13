@@ -1,86 +1,93 @@
-import Announcement from "../models/announcement";
+import Homework from "../models/homework";
 import User from "../models/user";
 import { getClassById, getClassesByStudentId } from "./class";
 
-async function createAnnouncement(
+async function createHomework(
   centreId: number,
   classId: number,
   creatorId: number,
   title: string,
-  content: string
-): Promise<Announcement> {
+  description: string,
+  dueDate: string
+): Promise<Homework> {
   try {
-    return await Announcement.create({
+    return await Homework.create({
       centreId: centreId,
       classId: classId,
       creatorId: creatorId,
       title: title,
-      content: content,
+      description: description,
+      dueDate: new Date(dueDate),
     });
   } catch (error: any) {
-    throw new Error(`Failed to create announcement: ${error.message}`);
+    throw new Error(`Failed to create homework: ${error.message}`);
   }
 }
 
-async function deleteAnnouncement(
+async function deleteHomework(
   centreId: number,
-  announcementId: number
+  homeworkId: number
 ): Promise<boolean> {
   try {
-    const numDeletedRows = await Announcement.destroy({
-      where: { centreId: centreId, id: announcementId },
+    const numDeletedRows = await Homework.destroy({
+      where: { centreId: centreId, id: homeworkId },
     });
     return numDeletedRows > 0;
   } catch (error: any) {
-    throw new Error(`Failed to delete announcement: ${error.message}`);
+    throw new Error(`Failed to delete homework: ${error.message}`);
   }
 }
 
-async function editAnnouncement(
+async function editHomework(
   centreId: number,
   userId: number,
-  announcementId: number,
+  homeworkId: number,
   title: string,
-  content: string
-): Promise<Announcement> {
+  description: string,
+  dueDate: string
+): Promise<Homework> {
   try {
-    const announcement = await Announcement.findOne({
-      where: { centreId: centreId, id: announcementId },
+    const homework = await Homework.findOne({
+      where: { centreId: centreId, id: homeworkId },
     });
-    if (!announcement) {
-      throw new Error(`Announcement with ID ${announcementId} not found`);
+    if (!homework) {
+      throw new Error(`Homework with ID ${homeworkId} not found`);
     }
 
-    if (content) {
-      announcement.content = content;
+    if (description) {
+      homework.description = description;
     }
 
     if (title) {
-      announcement.title = title;
+      homework.title = title;
     }
 
-    announcement.creatorId = userId;
+    if (dueDate) {
+      homework.dueDate = new Date(dueDate);
+    }
 
-    await announcement.save();
-    await announcement.reload();
+    homework.creatorId = userId;
 
-    return announcement;
+    await homework.save();
+    await homework.reload();
+
+    return homework;
   } catch (error: any) {
-    throw new Error(`Failed to update announcement: ${error.message}`);
+    throw new Error(`Failed to update homework: ${error.message}`);
   }
 }
 
-async function getAnnouncementsByClassId(
+async function getHomeworkByClassId(
   centreId: number,
   classId: number
-): Promise<Announcement[]> {
+): Promise<Homework[]> {
   try {
     const targetClass = await getClassById(centreId, classId);
     if (!targetClass) {
       throw new Error(`Class with ID ${classId} not found`);
     }
 
-    return await Announcement.findAll({
+    return await Homework.findAll({
       where: { centreId: centreId, classId: classId },
       order: [["createdAt", "DESC"]],
       include: [
@@ -96,15 +103,15 @@ async function getAnnouncementsByClassId(
   }
 }
 
-async function getAnnouncementsByStudentId(
+async function getHomeworkByStudentId(
   centreId: number,
   studentId: number
-): Promise<Announcement[]> {
+): Promise<Homework[]> {
   try {
     const classes = await getClassesByStudentId(centreId, studentId);
     const classIds = classes.map((c) => c.id);
 
-    return await Announcement.findAll({
+    return await Homework.findAll({
       where: { centreId: centreId, classId: classIds },
       order: [["createdAt", "DESC"]],
       include: [
@@ -121,9 +128,9 @@ async function getAnnouncementsByStudentId(
 }
 
 export {
-  createAnnouncement,
-  deleteAnnouncement,
-  editAnnouncement,
-  getAnnouncementsByClassId,
-  getAnnouncementsByStudentId,
+  createHomework,
+  deleteHomework,
+  editHomework,
+  getHomeworkByClassId,
+  getHomeworkByStudentId,
 };

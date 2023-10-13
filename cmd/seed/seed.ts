@@ -1,5 +1,6 @@
 import { createAnnouncement } from "../../src/dataaccess/announcement";
 import { assignTutorToClass, createClass } from "../../src/dataaccess/class";
+import { createHomework } from "../../src/dataaccess/homework";
 import { createNote } from "../../src/dataaccess/note";
 import {
   createStudentUser,
@@ -46,6 +47,22 @@ const tutors = [
         class: "Class 1",
       },
     ],
+    homework: [
+      {
+        title: "Homework 1",
+        description: "This is homework",
+        dueDate: "2021-10-10",
+        centre: "testCentre",
+        class: "Class 1",
+      },
+      {
+        title: "Homework 2",
+        description: "This is another homework",
+        dueDate: "2021-10-10",
+        centre: "testCentre",
+        class: "Class 1",
+      },
+    ],
   },
   {
     fullName: "Bobby Fischer",
@@ -68,6 +85,22 @@ const tutors = [
       {
         title: "Announcement 2",
         content: "This is another announcement",
+        centre: "testCentre",
+        class: "Class 4",
+      },
+    ],
+    homework: [
+      {
+        title: "Homework 3",
+        description: "This is homework",
+        dueDate: "2021-10-10",
+        centre: "testCentre",
+        class: "Class 4",
+      },
+      {
+        title: "Homework 4",
+        description: "This is another homework",
+        dueDate: "2021-10-10",
         centre: "testCentre",
         class: "Class 4",
       },
@@ -219,6 +252,17 @@ export default async function seed() {
         response.tutor.id,
         announcement.title,
         announcement.content
+      );
+    }
+
+    for (const homework of tutor.homework) {
+      await createHomework(
+        centre.id,
+        centre.classes[homework.class].id,
+        response.tutor.id,
+        homework.title,
+        homework.description,
+        homework.dueDate
       );
     }
   }

@@ -16,6 +16,7 @@ const models = [
   "note",
   "message",
   "announcement",
+  "homework",
 ];
 
 export default async function migrateModels(db?: Sequelize) {

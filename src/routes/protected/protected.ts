@@ -9,6 +9,7 @@ import NoteRouter from "./note/note";
 import StudentRouter from "./student/student";
 import TutorRouter from "./tutor/tutor";
 import AnnouncementRouter from "./announcement/announcement";
+import HomeworkRouter from "./homework/homework";
 import simulateLag from "../../middleware/simulateLag";
 
 const router: Router = Router();
@@ -24,7 +25,8 @@ router.use(
   NoteRouter,
   StudentRouter,
   TutorRouter,
-  AnnouncementRouter
+  AnnouncementRouter,
+  HomeworkRouter
 );
 
 export default router;
