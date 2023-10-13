@@ -17,9 +17,9 @@ router.use(
   "/class",
   checkStudent,
   ViewClassesByStudentId,
+  ViewClassRouter,
 
   checkTutor,
-  ViewClassRouter,
   ViewClassesByTutorId,
 
   checkAdmin,
