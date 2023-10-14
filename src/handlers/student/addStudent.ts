@@ -46,7 +46,6 @@ export default async function handleAddStudent(
 
     res.status(201).json({ message: SUCCESS_CREATED_STUDENT, ...response });
   } catch (error: any) {
-    console.log(error.message);
     res
       .status(500)
       .json({ message: ERROR_FAILED_TO_CREATE_STUDENT, error: error.message });

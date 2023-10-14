@@ -1,6 +1,7 @@
 import Assessment from "../models/assessment";
 import TutorClass from "../models/tutorClass";
 import User from "../models/user";
+import { getClassViewById } from "./class";
 
 async function validateAccessPermission(
   requestorId: number,
@@ -127,9 +128,75 @@ async function getAssessmentsByStudentId(
   }
 }
 
+async function uploadAssessmentGrades(
+  centreId: number,
+  classId: number,
+  assessmentName: string,
+  total: number,
+  data: any
+): Promise<void> {
+  try {
+    const classInfo: any = await getClassViewById(centreId, classId);
+    const studentsInClass = classInfo.students;
+
+    const assessmentData: {
+      studentId: number;
+      assessmentName: string;
+      score: number;
+    }[] = [];
+
+    for (const row of data) {
+      console.log(row);
+      const studentId = parseInt(row["Student ID"]);
+      const score = parseInt(row["Score"]);
+
+      const studentExists = studentsInClass.some(
+        (student: any) => student.id === studentId
+      );
+
+      if (!studentExists) {
+        throw new Error(
+          `Student with ID ${studentId} is not in class ${classId}`
+        );
+      }
+
+      if (isNaN(score) || score < 0 || score > total) {
+        throw new Error(`Invalid score for student ${studentId}`);
+      }
+
+      assessmentData.push({ studentId, assessmentName, score });
+    }
+
+    for (const data of assessmentData) {
+      const { studentId, assessmentName, score } = data;
+      const existingAssessment = await Assessment.findOne({
+        where: { classId, studentId, name: assessmentName },
+      });
+
+      if (existingAssessment) {
+        existingAssessment.score = score;
+        await existingAssessment.save();
+      } else {
+        await Assessment.create({
+          centreId: centreId,
+          classId,
+          studentId,
+          name: assessmentName,
+          total,
+          score,
+        });
+      }
+    }
+  } catch (error: any) {
+    console.log(error);
+    throw new Error(`Failed to upload assessment: ${error.message}`);
+  }
+}
+
 export {
   createAssessment,
   deleteAssessment,
   editAssessment,
   getAssessmentsByStudentId,
+  uploadAssessmentGrades,
 };

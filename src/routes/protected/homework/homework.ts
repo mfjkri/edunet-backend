@@ -5,6 +5,7 @@ import DeleteHomeworkRouter from "./deleteHomework";
 import EditHomeworkRouter from "./editHomework";
 import ViewHomeworkByStudentId from "./viewHomeworkByStudentId";
 import ViewHomeWorkByClassId from "./viewHomeworkByClassId";
+import UploadAssessmentGradesRouter from "./uploadHomeworkGrades";
 import checkTutor from "../../../middleware/checkTutor";
 import checkStudent from "../../../middleware/checkStudent";
 
@@ -18,7 +19,8 @@ router.use(
   checkTutor,
   AddHomeworkRouter,
   EditHomeworkRouter,
-  DeleteHomeworkRouter
+  DeleteHomeworkRouter,
+  UploadAssessmentGradesRouter
 );
 
 export default router;
