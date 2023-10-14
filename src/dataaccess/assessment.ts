@@ -146,7 +146,6 @@ async function uploadAssessmentGrades(
     }[] = [];
 
     for (const row of data) {
-      console.log(row);
       const studentId = parseInt(row["Student ID"]);
       const score = parseInt(row["Score"]);
 
@@ -188,7 +187,6 @@ async function uploadAssessmentGrades(
       }
     }
   } catch (error: any) {
-    console.log(error);
     throw new Error(`Failed to upload assessment: ${error.message}`);
   }
 }

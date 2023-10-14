@@ -1,6 +1,7 @@
 import Announcement from "../models/announcement";
 import User from "../models/user";
-import { getClassById, getClassesByStudentId } from "./class";
+import { sendEmail } from "../utilities/mail";
+import { getClassById, getClassViewById, getClassesByStudentId } from "./class";
 
 async function createAnnouncement(
   centreId: number,
@@ -10,6 +11,19 @@ async function createAnnouncement(
   content: string
 ): Promise<Announcement> {
   try {
+    const targetClass: any = await getClassViewById(centreId, classId);
+    targetClass.students.forEach((student: any) => {
+      sendEmail(
+        student.email,
+        `Announcement (${targetClass.name}): ${title}`,
+        `Hi ${student.fullName},
+        \n\nA new announcement has been posted in ${targetClass.name}:
+        \n    ${content}
+        \n\nRegards,
+        \n${targetClass.centre.name}`
+      );
+    });
+
     return await Announcement.create({
       centreId: centreId,
       classId: classId,
